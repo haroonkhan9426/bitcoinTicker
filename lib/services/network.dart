@@ -13,7 +13,7 @@ class NetworkHelper{
         dynamic data = jsonDecode(response.body.toString());
         double price = data['last'];
         print(price);
-        return price.toString();
+        return price.round().toString();
       }else{
         print('Response Error from BitCoinAverage');
       }
