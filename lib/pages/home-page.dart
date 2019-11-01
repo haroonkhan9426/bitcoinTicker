@@ -12,11 +12,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String selectedCurrency = currenciesList.first;
-  String selectedCoin = cryptoList.first;
+  String selectedCoin = cryptoList[0];
   String selectedPrice = '?';
+
+  String selectedCurrency1 = currenciesList.first;
+  String selectedCoin1 = cryptoList[1];
+  String selectedPrice1 = '?';
+
+  String selectedCurrency2 = currenciesList.first;
+  String selectedCoin2 = cryptoList[2];
+  String selectedPrice2 = '?';
 
   @override
   Widget build(BuildContext context) {
+    print(selectedCoin);
+    print(selectedCoin1);
+    print(selectedCoin2);
     return Scaffold(
       appBar: AppBar(
         title: Text('Bitcoin Ticker'),
@@ -30,6 +41,14 @@ class _HomePageState extends State<HomePage> {
                 currencyType: selectedCurrency,
                 coinType: selectedCoin,
                 coinInCurrency: selectedPrice),
+            CoinPriceCard(
+                currencyType: selectedCurrency1,
+                coinType: selectedCoin1,
+                coinInCurrency: selectedPrice1),
+            CoinPriceCard(
+                currencyType: selectedCurrency2,
+                coinType: selectedCoin2,
+                coinInCurrency: selectedPrice2),
             Container(
               height: 150.0,
               alignment: Alignment.center,
@@ -60,9 +79,18 @@ class _HomePageState extends State<HomePage> {
         String url = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/$selectedCoin$selectedCurrency';
         String price = await NetworkHelper(url: url).getDataPrice();
 
+        String url1 = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/$selectedCoin1$selectedCurrency1';
+        String price1 = await NetworkHelper(url: url1).getDataPrice();
+
+        String url2 = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/$selectedCoin2$selectedCurrency2';
+        String price2 = await NetworkHelper(url: url2).getDataPrice();
         setState(() {
           selectedCurrency = newVal;
           selectedPrice = price;
+          selectedCurrency1 = newVal;
+          selectedPrice1 = price1;
+          selectedCurrency2 = newVal;
+          selectedPrice2 = price2;
         });
       },
       items: currenciesList

@@ -17,7 +17,6 @@ class NetworkHelper{
       }else{
         print('Response Error from BitCoinAverage');
       }
-
     }catch(e){
       print(e);
     }
