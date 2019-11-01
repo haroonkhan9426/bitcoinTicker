@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:bitcoin_ticker/data/coin-data.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
+import 'package:bitcoin_ticker/custom_widgets/coinPriceCard.dart';
+import 'package:bitcoin_ticker/services/network.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,7 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String dropDownVal = currenciesList.first;
+  String selectedCurrency = currenciesList.first;
+  String selectedCoin = cryptoList.first;
+  String selectedPrice = '?';
 
   @override
   Widget build(BuildContext context) {
@@ -22,27 +26,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Card(
-                color: Colors.lightBlueAccent,
-                elevation: 5.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    'Card1',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            CoinPriceCard(
+                currencyType: selectedCurrency,
+                coinType: selectedCoin,
+                coinInCurrency: selectedPrice),
             Container(
               height: 150.0,
               alignment: Alignment.center,
@@ -60,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     return CupertinoPicker(
       itemExtent: 30.0,
       onSelectedItemChanged: (val) {
-        dropDownVal = currenciesList[val];
+        selectedCurrency = currenciesList[val];
       },
       children: currenciesList.map((currency) => Text(currency)).toList(),
     );
@@ -68,10 +55,14 @@ class _HomePageState extends State<HomePage> {
 
   DropdownButton getAndroidDropdown() {
     return DropdownButton(
-      value: dropDownVal,
-      onChanged: (newVal) {
+      value: selectedCurrency,
+      onChanged: (newVal) async {
+        String url = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/$selectedCoin$selectedCurrency';
+        String price = await NetworkHelper(url: url).getDataPrice();
+
         setState(() {
-          dropDownVal = newVal;
+          selectedCurrency = newVal;
+          selectedPrice = price;
         });
       },
       items: currenciesList
@@ -79,5 +70,9 @@ class _HomePageState extends State<HomePage> {
               DropdownMenuItem(value: currency, child: Text(currency)))
           .toList(),
     );
+  }
+
+  void updatePrice(String currency) async {
+
   }
 }
