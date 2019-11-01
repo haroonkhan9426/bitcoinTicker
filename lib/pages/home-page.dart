@@ -9,21 +9,38 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Card(
-              child: Text('Card1'),
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Card(
+                color: Colors.lightBlueAccent,
+                elevation: 5.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    'Card1',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            Card(
-              child: Text('Card1'),
+            Container(
+              height: 150.0,
+              alignment: Alignment.center,
+              color: Colors.lightBlue,
+              child: null,
             ),
-            Card(
-              child: Text('Card1'),
-            ),
-
           ],
         ),
-
       ),
     );
   }
